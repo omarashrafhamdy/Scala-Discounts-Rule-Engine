@@ -13,9 +13,12 @@ object main extends App {
   val logTXT: File = new File("src/main/output/logs.txt")
   val txtWriter = new PrintWriter(new FileOutputStream(logTXT, true))
   val ordersWithDiscountsCSV: File = new File("src/main/output/OrdersWithDiscounts.csv")
-  if (logTXT.exists() && ordersWithDiscountsCSV.exists()) {
-    // If the file exists, delete it
+  if (logTXT.exists()) {
+    // If the log.txt file exists, delete it
     logTXT.delete()
+  }
+  if (ordersWithDiscountsCSV.exists()) {
+    // If the ordersWithDiscountsCSV file exists, delete it
     ordersWithDiscountsCSV.delete()
   }
   val csvWriter = new PrintWriter(new FileOutputStream(ordersWithDiscountsCSV, true))
