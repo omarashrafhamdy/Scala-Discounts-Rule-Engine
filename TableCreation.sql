@@ -9,9 +9,3 @@ CREATE TABLE Orders (
     Discount DECIMAL(4,3),
     Final_Price DECIMAL(10,2)
 );
-
-truncate table orders;
-
-select count(*)
-from orders
-where discount <> 0.0

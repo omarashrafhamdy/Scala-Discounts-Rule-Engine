@@ -13,14 +13,6 @@ object main extends App {
   val logTXT: File = new File("src/main/output/logs.txt")
   val txtWriter = new PrintWriter(new FileOutputStream(logTXT, true))
   val ordersWithDiscountsCSV: File = new File("src/main/output/OrdersWithDiscounts.csv")
-  if (logTXT.exists()) {
-    // If the log.txt file exists, delete it
-    logTXT.delete()
-  }
-  if (ordersWithDiscountsCSV.exists()) {
-    // If the ordersWithDiscountsCSV file exists, delete it
-    ordersWithDiscountsCSV.delete()
-  }
   val csvWriter = new PrintWriter(new FileOutputStream(ordersWithDiscountsCSV, true))
 
   log_event(txtWriter, "Info", "Starting Application")
@@ -209,14 +201,6 @@ object main extends App {
     }
   }
 
-  //function to truncate table before insert
-  def truncateDB(connection: Connection):Unit = {
-    val truncateSql = "TRUNCATE TABLE Orders"
-    val truncateStatement = connection.createStatement()
-    truncateStatement.executeUpdate(truncateSql)
-    truncateStatement.close()
-  }
-
   //log event function to call it for each log
   def log_event(writer: PrintWriter, log_level: String , message:String): Unit = {
     writer.write(s"Timestamp: ${Instant.now()}\t LogLevel: ${log_level} \t message: $message\n")
@@ -251,7 +235,6 @@ object main extends App {
   val dbStartTime = System.nanoTime()
   lazy val connection = Singleton.getConnection()
   log_event(txtWriter,"Debug", "Inserting Data In DB")
-  truncateDB(connection)
   ordersWithDiscounts.foreach(x=>writeToDB(x,connection))
   log_event(txtWriter,"Debug", "Data Inserted In DB")
   connection.close()
